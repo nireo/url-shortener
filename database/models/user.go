@@ -19,3 +19,8 @@ func (user *User) Serialize() common.JSON {
 		"username": user.Username,
 	}
 }
+
+func (user *User) Read(m common.JSON) {
+	user.ID = m["id"].(uint)
+	user.Username = m["username"].(string)
+}
