@@ -3,6 +3,7 @@ package database
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite" // sqlite config
+	"github.com/nireo/url-shortener/database/models"
 )
 
 // InitDB Initializes the database
@@ -12,5 +13,6 @@ func InitDB() (*gorm.DB, error) {
 		panic(err)
 	}
 
+	models.Migrate(db)
 	return db, err
 }

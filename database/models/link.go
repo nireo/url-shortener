@@ -4,9 +4,9 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// User model
-type User struct {
+// Link model
+type Link struct {
 	gorm.Model
-	Username string
-	Password string
+	Original string
+	UUID     string
 }
