@@ -40,11 +40,24 @@ func delete(c *gin.Context) {
 	id := c.Param("id")
 
 	var link Link
-	if err := db.Where("id = ?", id).First(&link); err != nil {
+	if err := db.Where("uuid = ?", id).First(&link); err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
 
 	db.Delete(&link)
 	c.Status(204)
+}
+
+func getLink(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	var link Link
+	if err := db.Where("uuid = ?", id).First(&link); err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	c.Redirect(200, link.Original)
 }
