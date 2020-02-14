@@ -34,3 +34,17 @@ func create(c *gin.Context) {
 
 	c.JSON(200, link.Serialize())
 }
+
+func delete(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
+
+	var link Link
+	if err := db.Where("id = ?", id).First(&link); err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
+	db.Delete(&link)
+	c.Status(204)
+}
