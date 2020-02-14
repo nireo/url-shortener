@@ -82,3 +82,11 @@ func login(c *gin.Context) {
 
 	c.JSON(200, user.Serialize())
 }
+
+func delete(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+
+	db.Delete(&user)
+	c.Status(204)
+}

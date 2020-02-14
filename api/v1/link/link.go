@@ -11,5 +11,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		auth.POST("/create", create)
 		auth.DELETE("/:id", delete)
 		auth.GET("/:id", getLink)
+		auth.PATCH("/:id", update)
 	}
 }
