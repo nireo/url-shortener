@@ -15,8 +15,8 @@ type Link struct {
 // Serialize user data
 func (link *Link) Serialize() common.JSON {
 	return common.JSON{
-		"id":         link.UUID,
 		"created_at": link.CreatedAt,
-		"original":   link.UUID,
+		"uuid":       link.UUID,
+		"original":   link.Original,
 	}
 }

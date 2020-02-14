@@ -1,9 +1,11 @@
 import React, { useState, ChangeEvent } from 'react';
 import { createLink } from '../services/link.service';
+import { LinkResponse } from '../interfaces/Link';
 
 export const Create: React.FC = () => {
   const [originalURL, setOriginalURL] = useState<string>('');
   const [created, setCreated] = useState<boolean>(false);
+  const [recentURLs, setRecentURLs] = useState<string[]>([]);
 
   const create = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -11,8 +13,10 @@ export const Create: React.FC = () => {
       return;
     }
 
-    createLink(originalURL);
-    setCreated(true);
+    createLink(originalURL).then((response: LinkResponse) => {
+      setCreated(true);
+      setRecentURLs(recentURLs.concat(response.uuid));
+    });
   };
 
   return (
@@ -30,8 +34,12 @@ export const Create: React.FC = () => {
       {created === true && (
         <div>
           <p>You have created url</p>
+          <button onClick={() => setCreated(false)}>Create another</button>
         </div>
       )}
+      {recentURLs.map(url => (
+        <div>{url}</div>
+      ))}
     </div>
   );
 };

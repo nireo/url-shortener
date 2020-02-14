@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-const baseUrl = '/api/link';
+import axios from 'axios';
+const baseUrl = '/link';
 
 let token: string | null = null;
 

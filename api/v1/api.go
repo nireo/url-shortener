@@ -8,7 +8,7 @@ import (
 
 // ApplyRoutes to gin engine
 func ApplyRoutes(r *gin.Engine) {
-	routes := r.Group("/api")
+	routes := r.Group("/")
 	{
 		auth.ApplyRoutes(routes)
 		link.ApplyRoutes(routes)

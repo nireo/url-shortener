@@ -40,7 +40,7 @@ func delete(c *gin.Context) {
 	id := c.Param("id")
 
 	var link Link
-	if err := db.Where("uuid = ?", id).First(&link); err != nil {
+	if err := db.Where("uuid = ?", id).First(&link).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
@@ -54,7 +54,7 @@ func getLink(c *gin.Context) {
 	id := c.Param("id")
 
 	var link Link
-	if err := db.Where("uuid = ?", id).First(&link); err != nil {
+	if err := db.Where("uuid = ?", id).First(&link).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
