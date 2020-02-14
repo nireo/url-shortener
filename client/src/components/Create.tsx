@@ -20,26 +20,38 @@ export const Create: React.FC = () => {
   };
 
   return (
-    <div>
-      <p>Input the URL you want to shorten</p>
-      {created === false && (
-        <form onSubmit={create}>
-          <input
-            value={originalURL}
-            onChange={({ target }) => setOriginalURL(target.value)}
-          />
-          <button type="submit">Create</button>
-        </form>
-      )}
-      {created === true && (
-        <div>
-          <p>You have created url</p>
-          <button onClick={() => setCreated(false)}>Create another</button>
-        </div>
-      )}
-      {recentURLs.map(url => (
-        <div>{url}</div>
-      ))}
+    <div className="container">
+      <div className="box">
+        {created === false && (
+          <form onSubmit={create}>
+            <div>
+              <input
+                className="form-control"
+                value={originalURL}
+                onChange={({ target }) => setOriginalURL(target.value)}
+                placeholder="Shorten your link"
+                style={{ fontSize: '18px' }}
+              />
+              <button
+                style={{ marginTop: '0.25rem' }}
+                className="project-button"
+                type="submit"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        )}
+        {created === true && (
+          <div>
+            <p>You have created url</p>
+            <button onClick={() => setCreated(false)}>Create another</button>
+          </div>
+        )}
+        {recentURLs.map(url => (
+          <div>{url}</div>
+        ))}
+      </div>
     </div>
   );
 };
