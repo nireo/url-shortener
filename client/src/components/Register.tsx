@@ -1,10 +1,22 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
+import { User } from '../interfaces/User';
+import { register as serviceRegister } from '../services/user.service';
 
-export const Register = () => {
+type Props = {
+  user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
+};
+
+export const Register: React.FC<Props> = ({ user, setUser }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirm, setConfirm] = useState<string>('');
+  const [showNotification, setShowNotification] = useState<boolean>(false);
+
+  if (user) {
+    return null;
+  }
 
   const register = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -12,6 +24,17 @@ export const Register = () => {
     if (password !== confirm) {
       return;
     }
+
+    serviceRegister(username, password)
+      .then((response: User) => {
+        setUser(response);
+      })
+      .catch(() => {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000);
+      });
   };
 
   return (

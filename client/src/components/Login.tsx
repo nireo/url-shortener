@@ -1,9 +1,17 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, SetStateAction, Dispatch } from 'react';
 import { Link } from 'react-router-dom';
+import { login as serviceLogin } from '../services/user.service';
+import { User } from '../interfaces/User';
 
-export const Login: React.FC = () => {
+type Props = {
+  user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
+};
+
+export const Login: React.FC<Props> = ({ user, setUser }) => {
   const [password, setPassword] = useState<string>('');
   const [username, setUsername] = useState<string>('');
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   const login = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -11,10 +19,26 @@ export const Login: React.FC = () => {
     if (password === '' || username === '') {
       return;
     }
+
+    serviceLogin(username, password)
+      .then((response: User) => {
+        setUser(response);
+      })
+      .catch(() => {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000);
+      });
   };
 
   return (
     <div className="container" style={{ marginTop: '2rem' }}>
+      {showNotification && (
+        <div className="alert alert-danger" style={{ fontSize: '16px' }}>
+          Username or password is incorrect.
+        </div>
+      )}
       <div className="box">
         <h1>Login</h1>
         <form onSubmit={login}>
