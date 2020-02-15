@@ -16,7 +16,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar />
+      <Navbar user={user} setUser={setUser} />
       <Route
         path="/"
         exact
