@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container">
-        <p className="navbar-brand" style={{ fontSize: '20px' }}>
+        <Link to="/" className="navbar-brand" style={{ fontSize: '20px' }}>
           benevol
-        </p>
+        </Link>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto"></ul>
           <ul className="navbar-nav">
@@ -20,13 +21,13 @@ export const Navbar: React.FC = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a
+              <Link
                 className="nav-link"
-                href="#about"
+                to="/login"
                 style={{ fontSize: '18px' }}
               >
                 login
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
