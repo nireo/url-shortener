@@ -1,14 +1,15 @@
 import React, { useState, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 
-export const Login: React.FC = () => {
-  const [password, setPassword] = useState<string>('');
+export const Register = () => {
   const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirm, setConfirm] = useState<string>('');
 
-  const login = (event: ChangeEvent<HTMLFormElement>) => {
+  const register = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (password === '' || username === '') {
+    if (password !== confirm) {
       return;
     }
   };
@@ -16,8 +17,8 @@ export const Login: React.FC = () => {
   return (
     <div className="container" style={{ marginTop: '2rem' }}>
       <div className="box">
-        <h1>Login</h1>
-        <form onSubmit={login}>
+        <h1>Register</h1>
+        <form onSubmit={register}>
           <div>
             <label style={{ fontSize: '16px', marginBottom: '0' }}>
               Username
@@ -38,7 +39,17 @@ export const Login: React.FC = () => {
               onChange={({ target }) => setPassword(target.value)}
               value={password}
               style={{ fontSize: '16px' }}
-              type="password"
+            />
+          </div>
+          <div style={{ marginTop: '1rem' }}>
+            <label style={{ fontSize: '16px', marginBottom: '0' }}>
+              Confirm Password
+            </label>
+            <input
+              className="form-control"
+              onChange={({ target }) => setConfirm(target.value)}
+              value={confirm}
+              style={{ fontSize: '16px' }}
             />
           </div>
           <div style={{ marginTop: '1rem' }}>
