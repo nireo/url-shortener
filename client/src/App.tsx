@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Create } from './components/Create';
 import { Navbar } from './components/Navbar';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { Welcome } from './components/Welcome';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { User } from './interfaces/User';
+import { Panel } from './components/Panel';
 
 const App = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>({
+    id: 1,
+    username: 'test'
+  });
+
   return (
     <Router>
       <Navbar />
@@ -27,12 +32,35 @@ const App = () => {
       <Route
         path="/login"
         exact
-        render={() => <Login user={user} setUser={setUser} />}
+        render={() =>
+          !user ? (
+            <Login user={user} setUser={setUser} />
+          ) : (
+            <Redirect to="panel" />
+          )
+        }
       />
       <Route
         path="/register"
         exact
-        render={() => <Register user={user} setUser={setUser} />}
+        render={() =>
+          !user ? (
+            <Register user={user} setUser={setUser} />
+          ) : (
+            <Redirect to="/panel" />
+          )
+        }
+      />
+      <Route
+        path="/panel"
+        exact
+        render={() =>
+          user ? (
+            <Panel user={user} setUser={setUser} />
+          ) : (
+            <Redirect to="/login" />
+          )
+        }
       />
     </Router>
   );

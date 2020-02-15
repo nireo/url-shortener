@@ -1,8 +1,13 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { createLink } from '../services/link.service';
 import { LinkResponse } from '../interfaces/Link';
 
-export const Create: React.FC = () => {
+type Props = {
+  panel?: boolean;
+  setShowCreate?: Dispatch<SetStateAction<boolean>>;
+};
+
+export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
   const [originalURL, setOriginalURL] = useState<string>('');
   const [created, setCreated] = useState<boolean>(false);
   const [recentURLs, setRecentURLs] = useState<string[]>([]);
@@ -24,7 +29,9 @@ export const Create: React.FC = () => {
       <div className="box">
         {created === false && (
           <form onSubmit={create}>
-            <h3 style={{ marginBottom: '1rem' }}>Quickly create link</h3>
+            {!panel && (
+              <h3 style={{ marginBottom: '1rem' }}>Quickly create link</h3>
+            )}
             <div>
               <input
                 className="form-control"
@@ -33,13 +40,24 @@ export const Create: React.FC = () => {
                 placeholder="Shorten your link"
                 style={{ fontSize: '16px' }}
               />
-              <button
-                style={{ marginTop: '0.5rem' }}
-                className="project-button"
-                type="submit"
-              >
-                Create
-              </button>
+              <div>
+                <button
+                  style={{ marginTop: '0.5rem' }}
+                  className="project-button"
+                  type="submit"
+                >
+                  Create
+                </button>
+                {setShowCreate && (
+                  <button
+                    onClick={() => setShowCreate(false)}
+                    style={{ marginLeft: '0.5rem' }}
+                    className="project-button"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
             </div>
           </form>
         )}
