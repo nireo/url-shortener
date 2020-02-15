@@ -1,40 +1,26 @@
 import React from 'react';
 import { Create } from './components/Create';
 import { Navbar } from './components/Navbar';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Welcome } from './components/Welcome';
 
 const App = () => {
   return (
-    <div>
+    <Router>
       <Navbar />
-      <div>
-        <div className="container">
-          <h1
-            style={{
-              fontSize: '48px',
-              marginTop: '4rem',
-              fontFamily: 'Montserrat, sans-serif'
-            }}
-          >
-            Create short links with ease!
-            <div
-              className="text-muted"
-              style={{
-                fontFamily: 'Roboto, sans-serif',
-                fontSize: '20px',
-                fontWeight: 400
-              }}
-            >
-              Make easily recognizable links, instead of long untrustworthy
-              links.
+      <Route
+        path="/"
+        exact
+        render={() => (
+          <div>
+            <Welcome />
+            <div style={{ marginTop: '6rem' }}>
+              <Create />
             </div>
-          </h1>
-          <button className="project-button">Get started</button>
-        </div>
-        <div style={{ marginTop: '6rem' }}>
-          <Create />
-        </div>
-      </div>
-    </div>
+          </div>
+        )}
+      />
+    </Router>
   );
 };
 

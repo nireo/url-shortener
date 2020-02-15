@@ -59,7 +59,7 @@ func getLink(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(200, link.Original)
+	c.Redirect(302, link.Original)
 }
 
 func update(c *gin.Context) {

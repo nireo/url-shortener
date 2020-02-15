@@ -24,16 +24,17 @@ export const Create: React.FC = () => {
       <div className="box">
         {created === false && (
           <form onSubmit={create}>
+            <h3 style={{ marginBottom: '1rem' }}>Quickly create link</h3>
             <div>
               <input
                 className="form-control"
                 value={originalURL}
                 onChange={({ target }) => setOriginalURL(target.value)}
                 placeholder="Shorten your link"
-                style={{ fontSize: '18px' }}
+                style={{ fontSize: '16px' }}
               />
               <button
-                style={{ marginTop: '0.25rem' }}
+                style={{ marginTop: '0.5rem' }}
                 className="project-button"
                 type="submit"
               >
