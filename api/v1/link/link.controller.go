@@ -10,10 +10,14 @@ import (
 // Link type alias
 type Link = models.Link
 
+// User type alias
+type User = models.User
+
 func create(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	type RequestBody struct {
 		Original string `json:"original" binding:"required"`
+		Username string `json:"username" binding:"required"`
 	}
 
 	var requestBody RequestBody

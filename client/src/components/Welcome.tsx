@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Welcome: React.FC = () => {
   return (
@@ -22,7 +23,9 @@ export const Welcome: React.FC = () => {
           Make easily recognizable links, instead of long untrustworthy links.
         </div>
       </h1>
-      <button className="project-button">Get started</button>
+      <Link to="/login">
+        <button className="project-button">Get started</button>
+      </Link>
     </div>
   );
 };

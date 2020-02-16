@@ -54,13 +54,7 @@ const App = () => {
       <Route
         path="/panel"
         exact
-        render={() =>
-          user ? (
-            <Panel user={user} setUser={setUser} />
-          ) : (
-            <Redirect to="/login" />
-          )
-        }
+        render={() => (user ? <Panel user={user} /> : <Redirect to="/login" />)}
       />
     </Router>
   );
