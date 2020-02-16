@@ -1,9 +1,13 @@
 package auth
 
 import (
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/nireo/url-shortener/database/models"
+	"github.com/nireo/url-shortener/lib/common"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,6 +24,17 @@ func checkHash(password string, hash string) bool {
 	return err == nil
 }
 
+func generateToken(data common.JSON) (string, error) {
+	date := time.Now().Add(time.Hour * 24 * 7)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user": data,
+		"exp":  date.Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte("very secret string"))
+	return tokenString, err
+}
+
 func register(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	type RequestBody struct {
@@ -34,7 +49,7 @@ func register(c *gin.Context) {
 	}
 
 	var exists User
-	if err := db.Where("username = ?", requestBody.Username).First(&exists).Error; err != nil {
+	if err := db.Where("username = ?", requestBody.Username).First(&exists).Error; err == nil {
 		c.AbortWithStatus(409)
 		return
 	}
@@ -58,29 +73,41 @@ func register(c *gin.Context) {
 
 func login(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
+
 	type RequestBody struct {
 		Username string `json:"username" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
 
-	var requestBody RequestBody
-	if err := c.BindJSON(&requestBody).Error; err != nil {
-		c.AbortWithStatus(401)
+	var body RequestBody
+	if err := c.BindJSON(&body); err != nil {
+		c.AbortWithStatus(400)
 		return
 	}
 
 	var user User
-	if err := db.Where("username = ?", requestBody.Username).First(&user).Error; err != nil {
+	if err := db.Where("username = ?", body.Username).First(&user).Error; err != nil {
 		c.AbortWithStatus(404)
 		return
 	}
 
-	if !checkHash(requestBody.Password, user.Password) {
+	if !checkHash(body.Password, user.Password) {
 		c.AbortWithStatus(401)
 		return
 	}
 
-	c.JSON(200, user.Serialize())
+	serialized := user.Serialize()
+	token, err := generateToken(serialized)
+
+	if err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	c.JSON(200, common.JSON{
+		"user":  user.Serialize(),
+		"token": token,
+	})
 }
 
 func delete(c *gin.Context) {

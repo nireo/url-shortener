@@ -9,10 +9,7 @@ import { User } from './interfaces/User';
 import { Panel } from './components/Panel';
 
 const App = () => {
-  const [user, setUser] = useState<User | null>({
-    id: 1,
-    username: 'test'
-  });
+  const [user, setUser] = useState<User | null>(null);
 
   return (
     <Router>
