@@ -10,6 +10,8 @@ type Link struct {
 	gorm.Model
 	Original string
 	UUID     string
+	User     User
+	UserID   uint
 }
 
 // Serialize user data

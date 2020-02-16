@@ -15,6 +15,7 @@ type User = models.User
 
 func create(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
 	type RequestBody struct {
 		Original string `json:"original" binding:"required"`
 	}
@@ -30,6 +31,8 @@ func create(c *gin.Context) {
 	link := Link{
 		Original: requestBody.Original,
 		UUID:     uuid,
+		User:     user,
+		UserID:   user.ID,
 	}
 
 	db.NewRecord(link)
@@ -108,10 +111,19 @@ func anonymous(c *gin.Context) {
 		return
 	}
 
+	// get the anonymous user
+	var user User
+	if err := db.Where("id = ?", 1).First(&user).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
+	}
+
 	uuid := common.GenerateUUID()
 	link := Link{
 		Original: requestBody.Original,
 		UUID:     uuid,
+		UserID:   user.ID,
+		User:     user,
 	}
 
 	db.NewRecord(link)
