@@ -130,3 +130,21 @@ func anonymous(c *gin.Context) {
 	db.Create(&link)
 	c.JSON(200, link.Serialize())
 }
+
+func getUserLink(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	user := c.MustGet("user").(User)
+
+	var links []Link
+	if err := db.Model(&user).Related(&links).Error; err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	serialized := make([]common.JSON, len(links), len(links))
+	for index := range links {
+		serialized[index] = links[index].Serialize()
+	}
+
+	c.JSON(200, serialized)
+}

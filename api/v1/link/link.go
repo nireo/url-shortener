@@ -14,5 +14,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		auth.DELETE("/:id", delete)
 		auth.GET("/:id", getLink)
 		auth.PATCH("/:id", update)
+		auth.GET("/", middlewares.Authorized, getUserLink)
 	}
 }
