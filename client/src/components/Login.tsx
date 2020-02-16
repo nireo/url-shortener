@@ -12,6 +12,7 @@ export const Login: React.FC<Props> = ({ user, setUser }) => {
   const [password, setPassword] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [remember, setRemember] = useState<boolean>(false);
 
   const login = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,6 +23,9 @@ export const Login: React.FC<Props> = ({ user, setUser }) => {
 
     serviceLogin(username, password)
       .then((response: User) => {
+        if (remember) {
+          window.localStorage.setItem('user', JSON.stringify(response));
+        }
         setUser(response);
       })
       .catch(() => {
@@ -64,6 +68,16 @@ export const Login: React.FC<Props> = ({ user, setUser }) => {
               style={{ fontSize: '16px' }}
               type="password"
             />
+          </div>
+          <div className="form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              onChange={() => setRemember(!remember)}
+            />
+            <label style={{ fontSize: '16px' }} className="form-check-label">
+              Remember me
+            </label>
           </div>
           <div style={{ marginTop: '1rem' }}>
             <button type="submit" className="project-button">

@@ -26,8 +26,8 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
     }
 
     serviceRegister(username, password)
-      .then((response: User) => {
-        setUser(response);
+      .then((response: any) => {
+        setUser(response.user);
       })
       .catch(() => {
         setShowNotification(true);
@@ -59,6 +59,7 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
             </label>
             <input
               className="form-control"
+              type="password"
               onChange={({ target }) => setPassword(target.value)}
               value={password}
               style={{ fontSize: '16px' }}
@@ -70,6 +71,7 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
             </label>
             <input
               className="form-control"
+              type="password"
               onChange={({ target }) => setConfirm(target.value)}
               value={confirm}
               style={{ fontSize: '16px' }}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Create } from './components/Create';
 import { Navbar } from './components/Navbar';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
@@ -10,6 +10,19 @@ import { Panel } from './components/Panel';
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user === null && loaded === false) {
+      const userInfo: string | null = localStorage.getItem('user');
+      console.log(userInfo);
+      if (userInfo) {
+        const userInfoJSON = JSON.parse(userInfo);
+        setUser(userInfoJSON.user);
+      }
+      setLoaded(true);
+    }
+  }, []);
 
   return (
     <Router>
