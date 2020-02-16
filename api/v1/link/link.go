@@ -9,6 +9,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	auth := r.Group("/link")
 	{
 		auth.POST("/create", create)
+		auth.POST("/anonymous", anonymous)
 		auth.DELETE("/:id", delete)
 		auth.GET("/:id", getLink)
 		auth.PATCH("/:id", update)

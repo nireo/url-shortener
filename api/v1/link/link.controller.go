@@ -17,7 +17,6 @@ func create(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	type RequestBody struct {
 		Original string `json:"original" binding:"required"`
-		Username string `json:"username" binding:"required"`
 	}
 
 	var requestBody RequestBody
@@ -94,5 +93,28 @@ func update(c *gin.Context) {
 	link.Original = requestBody.Original
 
 	db.Save(&link)
+	c.JSON(200, link.Serialize())
+}
+
+func anonymous(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	type RequestBody struct {
+		Original string `json:"original" binding:"required"`
+	}
+
+	var requestBody RequestBody
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	uuid := common.GenerateUUID()
+	link := Link{
+		Original: requestBody.Original,
+		UUID:     uuid,
+	}
+
+	db.NewRecord(link)
+	db.Create(&link)
 	c.JSON(200, link.Serialize())
 }
