@@ -20,3 +20,8 @@ export const deleteLink = async (uuid: string) => {
   const response = await axios.delete(`${baseUrl}/${uuid}`);
   return response.data;
 };
+
+export const getUserLinks = async () => {
+  const response = await axios.get(baseUrl, getConfig());
+  return response.data;
+};
