@@ -19,6 +19,7 @@ export const Panel: React.FC<Props> = ({ user }) => {
       getUserLinks()
         .then((response: any) => {
           setUserLinks(response);
+          setLoaded(false);
         })
         .catch(() => {
           setShowNotification(true);
@@ -27,11 +28,35 @@ export const Panel: React.FC<Props> = ({ user }) => {
           }, 4000);
         });
     }
-  }, []);
+  }, [pageToRender]);
 
   if (!user) {
     return null;
   }
+
+  const parseDate = (dateString: string) => {
+    const date = new Date(dateString);
+    var monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  };
 
   return (
     <div className="container">
@@ -67,7 +92,30 @@ export const Panel: React.FC<Props> = ({ user }) => {
             <Create panel={true} />
           </div>
         )}
-        {pageToRender === 1 && <div style={{ marginTop: '2rem' }}></div>}
+        {pageToRender === 1 && (
+          <div style={{ marginTop: '2rem' }}>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Original</th>
+                  <th scope="col">Shortened</th>
+                  <th scope="col">Created at</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userLinks.map((link: any, index: number) => (
+                  <tr>
+                    <th scope="row">{index + 1}</th>
+                    <td>{link.original}</td>
+                    <td>{link.uuid}</td>
+                    <td>{parseDate(link.created_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
