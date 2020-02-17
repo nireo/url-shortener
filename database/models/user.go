@@ -21,6 +21,6 @@ func (user *User) Serialize() common.JSON {
 }
 
 func (user *User) Read(m common.JSON) {
-	user.ID = m["id"].(uint)
+	user.ID = uint(m["id"].(float64))
 	user.Username = m["username"].(string)
 }

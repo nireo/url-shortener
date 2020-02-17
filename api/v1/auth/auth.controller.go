@@ -31,7 +31,7 @@ func generateToken(data common.JSON) (string, error) {
 		"exp":  date.Unix(),
 	})
 
-	tokenString, err := token.SignedString([]byte("very secret string"))
+	tokenString, err := token.SignedString([]byte("temporary secret"))
 	return tokenString, err
 }
 

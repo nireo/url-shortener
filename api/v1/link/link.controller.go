@@ -22,7 +22,7 @@ func create(c *gin.Context) {
 
 	var requestBody RequestBody
 	if err := c.BindJSON(&requestBody); err != nil {
-		c.AbortWithStatus(401)
+		c.AbortWithStatus(400)
 		return
 	}
 

@@ -25,12 +25,15 @@ func validateToken(tokenString string) (common.JSON, error) {
 		}
 		return secretKey, nil
 	})
+
 	if err != nil {
 		return common.JSON{}, err
 	}
+
 	if !token.Valid {
-		return common.JSON{}, errors.New("invalid token")
+		return common.JSON{}, errors.New("Invalid token")
 	}
+
 	return token.Claims.(jwt.MapClaims), nil
 }
 
