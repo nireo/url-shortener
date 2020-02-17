@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { User } from '../interfaces/User';
 import { Create } from './Create';
 import { Link } from 'react-router-dom';
-import { getUserLinks } from '../services/link.service';
+import {
+  getUserLinks,
+  deleteLink as sDeleteLink
+} from '../services/link.service';
 
 type Props = {
   user: User;
@@ -11,11 +14,11 @@ type Props = {
 export const Panel: React.FC<Props> = ({ user }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [pageToRender, setPageToRender] = useState<number>(0);
-  const [userLinks, setUserLinks] = useState<object[]>([]);
+  const [userLinks, setUserLinks] = useState<any>(null);
   const [showNotification, setShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
-    if (user && pageToRender === 1 && !loaded) {
+    if (user && pageToRender === 1 && loaded === false && userLinks === null) {
       getUserLinks()
         .then((response: any) => {
           setUserLinks(response);
@@ -58,6 +61,12 @@ export const Panel: React.FC<Props> = ({ user }) => {
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
   };
 
+  const deleteLink = (id: string) => {
+    if (window.confirm('Delete link?')) {
+      sDeleteLink(id);
+    }
+  };
+
   return (
     <div className="container">
       {showNotification && (
@@ -94,26 +103,43 @@ export const Panel: React.FC<Props> = ({ user }) => {
         )}
         {pageToRender === 1 && (
           <div style={{ marginTop: '2rem' }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Original</th>
-                  <th scope="col">Shortened</th>
-                  <th scope="col">Created at</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userLinks.map((link: any, index: number) => (
+            {userLinks !== null && (
+              <table className="table">
+                <thead>
                   <tr>
-                    <th scope="row">{index + 1}</th>
-                    <td>{link.original}</td>
-                    <td>{link.uuid}</td>
-                    <td>{parseDate(link.created_at)}</td>
+                    <th scope="col">#</th>
+                    <th scope="col">Original</th>
+                    <th scope="col">Shortened</th>
+                    <th scope="col">Created at</th>
+                    <th scope="col">Delete</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {userLinks.map((link: any, index: number) => (
+                    <tr>
+                      <th scope="row">{index + 1}</th>
+                      <td>{link.original}</td>
+                      <td>{link.uuid}</td>
+                      <td>{parseDate(link.created_at)}</td>
+                      <td>
+                        <button
+                          style={{
+                            fontSize: '12px',
+                            padding: '0.4 1.5',
+                            marginTop: '0',
+                            marginBottom: '0'
+                          }}
+                          className="project-button"
+                          onClick={() => deleteLink(link.uuid)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
       </div>

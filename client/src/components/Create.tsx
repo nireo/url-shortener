@@ -10,7 +10,7 @@ type Props = {
 export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
   const [originalURL, setOriginalURL] = useState<string>('');
   const [created, setCreated] = useState<boolean>(false);
-  const [recentURLs, setRecentURLs] = useState<string[]>([]);
+  const [recentURLs, setRecentURLs] = useState<string>('');
 
   const create = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,7 +20,7 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
 
     createLink(originalURL).then((response: LinkResponse) => {
       setCreated(true);
-      setRecentURLs(recentURLs.concat(response.uuid));
+      setRecentURLs(response.uuid);
     });
   };
 
@@ -63,13 +63,17 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
         )}
         {created === true && (
           <div>
-            <p>You have created url</p>
-            <button onClick={() => setCreated(false)}>Create another</button>
+            <p style={{ fontSize: '16px' }}>
+              You have created url {recentURLs[0]}
+            </p>
+            <button
+              className="project-button"
+              onClick={() => setCreated(false)}
+            >
+              Create another
+            </button>
           </div>
         )}
-        {recentURLs.map(url => (
-          <div>{url}</div>
-        ))}
       </div>
     </div>
   );
