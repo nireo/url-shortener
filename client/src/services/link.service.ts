@@ -12,7 +12,11 @@ export const setToken = (newToken: string): void => {
 };
 
 export const createLink = async (original: string) => {
-  const response = await axios.post(`${baseUrl}/create`, { original });
+  const response = await axios.post(
+    `${baseUrl}/create`,
+    { original },
+    getConfig()
+  );
   return response.data;
 };
 

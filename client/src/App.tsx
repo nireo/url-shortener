@@ -7,6 +7,8 @@ import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { User } from './interfaces/User';
 import { Panel } from './components/Panel';
+import { setToken as setUserToken } from './services/user.service';
+import { setToken as setLinkToken } from './services/link.service';
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,6 +20,8 @@ const App = () => {
       console.log(userInfo);
       if (userInfo) {
         const userInfoJSON = JSON.parse(userInfo);
+        setLinkToken(userInfoJSON.token);
+        setUserToken(userInfoJSON.token);
         setUser(userInfoJSON.user);
       }
       setLoaded(true);

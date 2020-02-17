@@ -1,6 +1,10 @@
 import React, { useState, ChangeEvent, SetStateAction, Dispatch } from 'react';
 import { Link } from 'react-router-dom';
-import { login as serviceLogin } from '../services/user.service';
+import {
+  login as serviceLogin,
+  setToken as setUserToken
+} from '../services/user.service';
+import { setToken as setLinkToken } from '../services/link.service';
 import { User } from '../interfaces/User';
 
 type Props = {
@@ -22,11 +26,13 @@ export const Login: React.FC<Props> = ({ user, setUser }) => {
     }
 
     serviceLogin(username, password)
-      .then((response: User) => {
+      .then((response: any) => {
         if (remember) {
           window.localStorage.setItem('user', JSON.stringify(response));
         }
-        setUser(response);
+        setLinkToken(response.token);
+        setUserToken(response.token);
+        setUser(response.user);
       })
       .catch(() => {
         setShowNotification(true);
