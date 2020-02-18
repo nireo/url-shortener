@@ -68,37 +68,6 @@ func getLink(c *gin.Context) {
 	c.Redirect(302, link.Original)
 }
 
-func update(c *gin.Context) {
-	db := c.MustGet("db").(*gorm.DB)
-	id := c.Param("id")
-
-	if id == "" {
-		c.AbortWithStatus(400)
-		return
-	}
-
-	type RequestBody struct {
-		Original string `json:"original" binding:"required"`
-	}
-
-	var requestBody RequestBody
-	if err := c.BindJSON(requestBody); err != nil {
-		c.AbortWithStatus(400)
-		return
-	}
-
-	var link Link
-	if err := db.Where("uuid = ?", id).First(&link).Error; err != nil {
-		c.AbortWithStatus(404)
-		return
-	}
-
-	link.Original = requestBody.Original
-
-	db.Save(&link)
-	c.JSON(200, link.Serialize())
-}
-
 func anonymous(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	type RequestBody struct {
