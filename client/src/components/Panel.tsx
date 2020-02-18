@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { User } from '../interfaces/User';
 import { Create } from './Create';
 import { Link } from 'react-router-dom';
@@ -7,12 +7,14 @@ import {
   deleteLink as sDeleteLink
 } from '../services/link.service';
 import { LinkResponse } from '../interfaces/Link';
+import { removeUser } from '../services/user.service';
 
 type Props = {
   user: User;
+  setUser: Dispatch<SetStateAction<User | null>>;
 };
 
-export const Panel: React.FC<Props> = ({ user }) => {
+export const Panel: React.FC<Props> = ({ user, setUser }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [pageToRender, setPageToRender] = useState<number>(0);
   const [userLinks, setUserLinks] = useState<LinkResponse[] | null>(null);
@@ -68,6 +70,14 @@ export const Panel: React.FC<Props> = ({ user }) => {
     }
   };
 
+  const deleteUser = () => {
+    if (window.confirm('Are you sure you want delete your account?')) {
+      removeUser();
+      localStorage.clear();
+      setUser(null);
+    }
+  };
+
   return (
     <div className="container">
       {showNotification && (
@@ -94,6 +104,15 @@ export const Panel: React.FC<Props> = ({ user }) => {
               className={`nav-link ${pageToRender === 1 ? 'active' : ''}`}
             >
               Manage
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/panel"
+              onClick={() => setPageToRender(2)}
+              className={`nav-link ${pageToRender === 2 ? 'active' : ''}`}
+            >
+              Settings
             </Link>
           </li>
         </ul>
@@ -141,6 +160,18 @@ export const Panel: React.FC<Props> = ({ user }) => {
                 </tbody>
               </table>
             )}
+          </div>
+        )}
+        {pageToRender === 2 && (
+          <div style={{ marginTop: '2rem' }}>
+            <h2>Settings</h2>
+            <button
+              style={{ padding: '0.4rem 1.5rem' }}
+              className="project-button"
+              onClick={() => deleteUser()}
+            >
+              Delete user
+            </button>
           </div>
         )}
       </div>
