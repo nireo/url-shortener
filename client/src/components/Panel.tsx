@@ -116,7 +116,7 @@ export const Panel: React.FC<Props> = ({ user }) => {
                 </thead>
                 <tbody>
                   {userLinks.map((link: any, index: number) => (
-                    <tr>
+                    <tr key={index}>
                       <th scope="row">{index + 1}</th>
                       <td>{link.original}</td>
                       <td>{link.uuid}</td>

@@ -64,11 +64,24 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
         {created === true && (
           <div>
             <p style={{ fontSize: '16px' }}>
-              You have created url {recentURLs[0]}
+              Url has been successfully created
+              {console.log(recentURLs)}
             </p>
+            <div style={{ fontSize: '16px' }}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`http://url.benevol.xyz/link/${recentURLs}`}
+              >
+                http://url.benevol.xyz/link/{recentURLs}
+              </a>
+            </div>
             <button
               className="project-button"
-              onClick={() => setCreated(false)}
+              onClick={() => {
+                setCreated(false);
+                setOriginalURL('');
+              }}
             >
               Create another
             </button>
