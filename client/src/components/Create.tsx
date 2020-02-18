@@ -92,7 +92,7 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate, user }) => {
                 setOriginalURL('');
               }}
             >
-              Create another
+              Create another link
             </button>
           </div>
         )}

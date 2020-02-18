@@ -1,7 +1,9 @@
 import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
-import { User } from '../interfaces/User';
+import { User, UserWithToken } from '../interfaces/User';
 import { register as serviceRegister } from '../services/user.service';
+import { setToken as setLinkToken } from '../services/link.service';
+import { setToken as setUserToken } from '../services/user.service';
 
 type Props = {
   user: User | null;
@@ -26,8 +28,11 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
     }
 
     serviceRegister(username, password)
-      .then((response: any) => {
+      .then((response: UserWithToken) => {
         setUser(response.user);
+
+        setUserToken(response.token);
+        setLinkToken(response.token);
       })
       .catch(() => {
         setShowNotification(true);
@@ -39,6 +44,11 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
 
   return (
     <div className="container" style={{ marginTop: '2rem' }}>
+      {showNotification && (
+        <div className="alert alert-danger" style={{ fontSize: '16px' }}>
+          Username or password is incorrect.
+        </div>
+      )}
       <div className="box">
         <h1>Register</h1>
         <form onSubmit={register}>

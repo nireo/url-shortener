@@ -5,7 +5,7 @@ import {
   setToken as setUserToken
 } from '../services/user.service';
 import { setToken as setLinkToken } from '../services/link.service';
-import { User } from '../interfaces/User';
+import { User, UserWithToken } from '../interfaces/User';
 
 type Props = {
   user: User | null;
@@ -26,7 +26,7 @@ export const Login: React.FC<Props> = ({ user, setUser }) => {
     }
 
     serviceLogin(username, password)
-      .then((response: any) => {
+      .then((response: UserWithToken) => {
         if (remember) {
           window.localStorage.setItem('user', JSON.stringify(response));
         }

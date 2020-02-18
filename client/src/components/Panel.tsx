@@ -6,6 +6,7 @@ import {
   getUserLinks,
   deleteLink as sDeleteLink
 } from '../services/link.service';
+import { LinkResponse } from '../interfaces/Link';
 
 type Props = {
   user: User;
@@ -14,7 +15,7 @@ type Props = {
 export const Panel: React.FC<Props> = ({ user }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [pageToRender, setPageToRender] = useState<number>(0);
-  const [userLinks, setUserLinks] = useState<any>(null);
+  const [userLinks, setUserLinks] = useState<LinkResponse[] | null>(null);
   const [showNotification, setShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export const Panel: React.FC<Props> = ({ user }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {userLinks.map((link: any, index: number) => (
+                  {userLinks.map((link: LinkResponse, index: number) => (
                     <tr key={index}>
                       <th scope="row">{index + 1}</th>
                       <td>{link.original}</td>

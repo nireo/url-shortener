@@ -17,7 +17,6 @@ const App = () => {
   useEffect(() => {
     if (user === null && loaded === false) {
       const userInfo: string | null = localStorage.getItem('user');
-      console.log(userInfo);
       if (userInfo) {
         const userInfoJSON = JSON.parse(userInfo);
         setLinkToken(userInfoJSON.token);
