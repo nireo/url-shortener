@@ -29,3 +29,8 @@ export const getUserLinks = async () => {
   const response = await axios.get(baseUrl, getConfig());
   return response.data;
 };
+
+export const createAnonymous = async (original: string) => {
+  const response = await axios.post(`${baseUrl}/anonymous`, { original });
+  return response.data;
+};

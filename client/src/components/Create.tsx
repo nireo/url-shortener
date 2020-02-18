@@ -1,13 +1,15 @@
 import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { createLink } from '../services/link.service';
+import { createLink, createAnonymous } from '../services/link.service';
 import { LinkResponse } from '../interfaces/Link';
+import { User } from '../interfaces/User';
 
 type Props = {
   panel?: boolean;
   setShowCreate?: Dispatch<SetStateAction<boolean>>;
+  user?: User;
 };
 
-export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
+export const Create: React.FC<Props> = ({ panel, setShowCreate, user }) => {
   const [originalURL, setOriginalURL] = useState<string>('');
   const [created, setCreated] = useState<boolean>(false);
   const [recentURLs, setRecentURLs] = useState<string>('');
@@ -18,10 +20,17 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
       return;
     }
 
-    createLink(originalURL).then((response: LinkResponse) => {
-      setCreated(true);
-      setRecentURLs(response.uuid);
-    });
+    if (!user) {
+      createLink(originalURL).then((response: LinkResponse) => {
+        setCreated(true);
+        setRecentURLs(response.uuid);
+      });
+    } else {
+      createAnonymous(originalURL).then((response: LinkResponse) => {
+        setCreated(true);
+        setRecentURLs(response.uuid);
+      });
+    }
   };
 
   return (
@@ -30,7 +39,7 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate }) => {
         {created === false && (
           <form onSubmit={create}>
             {!panel && (
-              <h3 style={{ marginBottom: '1rem' }}>Quickly create link</h3>
+              <h3 style={{ marginBottom: '1rem' }}>Create link anonymously</h3>
             )}
             <div>
               <input
