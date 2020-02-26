@@ -6,7 +6,7 @@ import { User } from '../interfaces/User';
 type Props = {
   panel?: boolean;
   setShowCreate?: Dispatch<SetStateAction<boolean>>;
-  user?: User;
+  user?: User | null;
 };
 
 export const Create: React.FC<Props> = ({ panel, setShowCreate, user }) => {
@@ -20,7 +20,7 @@ export const Create: React.FC<Props> = ({ panel, setShowCreate, user }) => {
       return;
     }
 
-    if (!user) {
+    if (user) {
       createLink(originalURL).then((response: LinkResponse) => {
         setCreated(true);
         setRecentURLs(response.uuid);

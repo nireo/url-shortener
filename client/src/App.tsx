@@ -37,7 +37,7 @@ const App = () => {
           <div>
             <Welcome />
             <div style={{ marginTop: '6rem' }}>
-              <Create />
+              <Create user={user} />
             </div>
           </div>
         )}
