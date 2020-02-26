@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { User, UserWithToken } from '../interfaces/User';
 import { register as serviceRegister } from '../services/user.service';
 import { setToken as setLinkToken } from '../services/link.service';
@@ -30,9 +30,10 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
     serviceRegister(username, password)
       .then((response: UserWithToken) => {
         setUser(response.user);
-
+        window.localStorage.setItem('user', JSON.stringify(response));
         setUserToken(response.token);
         setLinkToken(response.token);
+        return <Redirect to="/panel" />;
       })
       .catch(() => {
         setShowNotification(true);

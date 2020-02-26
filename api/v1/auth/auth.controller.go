@@ -68,7 +68,18 @@ func register(c *gin.Context) {
 	db.NewRecord(user)
 	db.Create(&user)
 
-	c.JSON(200, user.Serialize())
+	serialized := user.Serialize()
+	token, err := generateToken(serialized)
+
+	if err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
+	c.JSON(200, common.JSON{
+		"user":  serialized,
+		"token": token,
+	})
 }
 
 func login(c *gin.Context) {
