@@ -26,12 +26,11 @@ export const deleteLink = async (uuid: string) => {
 };
 
 export const getUserLinks = async () => {
-  const response = await axios.get(baseUrl, getConfig());
+  const response = await axios.get(`${baseUrl}`, getConfig());
   return response.data;
 };
 
 export const createAnonymous = async (original: string) => {
-  console.log('hello');
   const response = await axios.post(`${baseUrl}/anonymous`, { original });
   return response.data;
 };

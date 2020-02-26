@@ -89,7 +89,7 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
           </div>
           <div style={{ marginTop: '1rem' }}>
             <button type="submit" className="project-button">
-              Login
+              Register
             </button>
             <Link
               style={{
@@ -98,9 +98,9 @@ export const Register: React.FC<Props> = ({ user, setUser }) => {
                 fontSize: '16px',
                 textDecoration: 'none'
               }}
-              to="/register"
+              to="/login"
             >
-              Don't have an account?
+              Already have an account?
             </Link>
           </div>
         </form>

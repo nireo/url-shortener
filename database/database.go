@@ -8,11 +8,12 @@ import (
 
 // InitDB Initializes the database
 func InitDB() (*gorm.DB, error) {
-	db, err := gorm.Open("sqlite3", "./forms.db")
+	db, err := gorm.Open("sqlite3", "./url.db")
 	if err != nil {
 		panic(err)
 	}
 
+	db.LogMode(true)
 	models.Migrate(db)
 	return db, err
 }

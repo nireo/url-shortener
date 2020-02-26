@@ -82,7 +82,7 @@ export const Panel: React.FC<Props> = ({ user, setUser }) => {
     <div className="container">
       {showNotification && (
         <div className="alert alert-danger" style={{ fontSize: '16px' }}>
-          Username or password is incorrect.
+          Something went wrong.
         </div>
       )}
       <div className="box">
@@ -118,7 +118,7 @@ export const Panel: React.FC<Props> = ({ user, setUser }) => {
         </ul>
         {pageToRender === 0 && (
           <div style={{ marginTop: '2rem' }}>
-            <Create panel={true} />
+            <Create panel={true} user={user} />
           </div>
         )}
         {pageToRender === 1 && (

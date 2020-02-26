@@ -81,14 +81,18 @@ func anonymous(c *gin.Context) {
 	}
 
 	uuid := common.GenerateUUID()
-	anonymousUser := User{
-		Username: "Hello",
+
+	var user User
+	if err := db.Where("username = ?", "anonymous").First(&user).Error; err != nil {
+		c.AbortWithStatus(404)
+		return
 	}
+
 	link := Link{
 		Original: requestBody.Original,
 		UUID:     uuid,
-		UserID:   1,
-		User:     anonymousUser,
+		UserID:   user.ID,
+		User:     user,
 	}
 
 	db.NewRecord(link)
