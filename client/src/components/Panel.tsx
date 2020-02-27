@@ -139,7 +139,11 @@ export const Panel: React.FC<Props> = ({ user, setUser }) => {
                     <tr key={index}>
                       <th scope="row">{index + 1}</th>
                       <td>{link.original}</td>
-                      <td>{link.uuid}</td>
+                      <td>
+                        <a href={`http://url.benevol.xyz/link/${link.uuid}`}>
+                          http://url.benevol.xyz/link{link.uuid}
+                        </a>
+                      </td>
                       <td>{parseDate(link.created_at)}</td>
                       <td>
                         <button
